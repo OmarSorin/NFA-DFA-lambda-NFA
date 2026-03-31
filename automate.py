@@ -23,7 +23,7 @@ def parse(lines):
         idx += 1
         stare_plecare, stare_finala, simbol = parts[0], parts[1], str(parts[2]) # procesat starile
 
-        if simbol == "λ":
+        if simbol == "Î»":
             simbol="lambda"
 
         if stare_plecare not in delta:
