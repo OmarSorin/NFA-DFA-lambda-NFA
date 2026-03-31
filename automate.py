@@ -23,8 +23,8 @@ def parse(lines):
         idx += 1
         stare_plecare, stare_finala, simbol = parts[0], parts[1], str(parts[2]) # procesat starile
 
-        if simbol == "Î»":
-            simbol="lambda"
+        if simbol == "Î»":  ## foarte funny procesarea pentru ca daca scriam simbol == "λ" imi adauga Î» in alfabetul de la LNFA :))
+            simbol="lambda" ## am gasit un work-around
 
         if stare_plecare not in delta:
             delta[stare_plecare] = {}
