@@ -21,10 +21,10 @@ def parse(lines):
     for _ in range(m):
         parts = lines[idx].strip().split()
         idx += 1
-        stare_plecare, stare_finala, simbol = parts[0], parts[1], parts[2] # procesat starile
+        stare_plecare, stare_finala, simbol = parts[0], parts[1], str(parts[2]) # procesat starile
 
         if simbol == 'λ':
-            simbol='lambda'
+            simbol="lambda"
 
         if stare_plecare not in delta:
             delta[stare_plecare] = {}
@@ -33,7 +33,7 @@ def parse(lines):
         delta[stare_plecare][simbol].append(stare_finala) # adica practic din fiecare stare unde pot ajunge cu fiecare simbol
 
         if simbol != 'lambda':
-            alfabet.add(simbol) ## alfabet pt bonus
+            alfabet.add(simbol) ## alfabet
 
     stare_init = lines[idx].strip() # stare initiala
     idx += 1
@@ -94,6 +94,7 @@ def proc_dfa(fisier_input, fisier_output):
             print(f"[DFA] Cuvant '{cuvant}' RESPINS. ")
 
     with open(fisier_output, 'w') as f:
+        f.write(f"{sorted(alfabet)}\n")
         for r in rezultate:
             f.write(r + '\n')
 
@@ -146,6 +147,7 @@ def proc_nfa(fisier_input, fisier_output):
             print(f"[NFA] Cuvant '{cuvant}' RESPINS.")
 
     with open(fisier_output, 'w') as f:
+        f.write(f"{sorted(alfabet)}\n")
         for r in rezultate:
             f.write(r + '\n')
 
@@ -220,6 +222,7 @@ def proc_nfa_lambda(fisier_input, fisier_output):
             print(f"[λ-NFA] Cuvant '{cuvant}' RESPINS.")
 
     with open(fisier_output, 'w') as f:
+        f.write(f"{sorted(alfabet)}\n")
         for r in rezultate:
             f.write(r + '\n')
 

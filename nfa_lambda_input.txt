@@ -1,7 +1,7 @@
 3
 q0 q1 q2
 4
-q0 q1 λ
+q0 q1 lambda
 q1 q2 a
 q0 q2 b
 q2 q2 a
