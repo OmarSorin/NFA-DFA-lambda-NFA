@@ -89,7 +89,6 @@ def proc_dfa(fisier_input, fisier_output):
         for r in rezultate:
             f.write(r + '\n')
 
-    print(f"[DFA] Rezultate scrise in '{fisier_output}'")
 
 
 def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
@@ -110,7 +109,7 @@ def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
                 stari_noi.add(dest)
                 tranz_pas.append((stare, simbol, dest))
 
-        tranzitii_fol.extend(tranz_pas)
+        tranzitii_fol.extend(tranz_pas) ## aici am facut pentru bonus si la NFA si LNFA dar nu prea am reusit, se introduc toate posibilitatile
         stari_curente = stari_noi
 
         if not stari_curente:
@@ -133,17 +132,14 @@ def proc_nfa(fisier_input, fisier_output):
         acceptat, tranz_fol = run_nfa(tranzitii, stare_init, stari_fin, cuvant)
         rezultate.append("DA" if acceptat else "NU")
 
-        # BONUS: afisam tranzitiile fol pentru cuvintele acceptate
         if acceptat:
-            print(f"[NFA] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
+            print(f"[NFA] Cuvant '{cuvant}' ACCEPTAT.")
         else:
-            print(f"[DFA] Cuvant '{cuvant}' RESPINS.")
+            print(f"[NFA] Cuvant '{cuvant}' RESPINS.")
 
     with open(fisier_output, 'w') as f:
         for r in rezultate:
             f.write(r + '\n')
-
-    print(f"[NFA] Rezultate scrise in '{fisier_output}'")
 
 
 def lambda_closure(stari_initiale, tranzitii):
@@ -215,13 +211,12 @@ def proc_nfa_lambda(fisier_input, fisier_output):
         if acceptat:
             print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
         else:
-            print(f"[DFA] Cuvant '{cuvant}' RESPINS.")
+            print(f"[NFA-λ] Cuvant '{cuvant}' RESPINS.")
 
     with open(fisier_output, 'w') as f:
         for r in rezultate:
             f.write(r + '\n')
 
-    print(f"[NFA-λ] Rezultate scrise in '{fisier_output}'")
 
 
 
