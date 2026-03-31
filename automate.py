@@ -114,7 +114,6 @@ def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
         stari_curente = stari_noi
 
         if not stari_curente:
-            # Nicio stare posibila => respingem
             return False, tranzitii_folosite
 
     acceptat = bool(stari_curente & stari_fin)
