@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 def parse(lines):
     idx = 0 # pe a cata linie sunt -1 ( indexata de la 0)
 
@@ -17,6 +22,9 @@ def parse(lines):
         parts = lines[idx].strip().split()
         idx += 1
         stare_plecare, stare_finala, simbol = parts[0], parts[1], parts[2] # procesat starile
+
+        if simbol == 'λ':
+            simbol='lambda'
 
         if stare_plecare not in delta:
             delta[stare_plecare] = {}
@@ -93,7 +101,7 @@ def proc_dfa(fisier_input, fisier_output):
 
 def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
 
-    # Multimea starilor curente - incepem cu starea initiala
+    # Multimea starilor curente
     stari_curente = {stare_init}
     tranzitii_fol = []
 
@@ -159,7 +167,7 @@ def lambda_closure(stari_initiale, tranzitii):
 
 def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
 
-    # Pasul initial: lambda-closure al starii initiale
+    #
     stari_curente = lambda_closure({stare_init}, tranzitii)
     tranzitii_fol = []
 
@@ -170,18 +178,18 @@ def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
         stari_dupa_simbol = set()
         tranz_pas = []
 
-        # Urmeaza tranzitia pe simbol din fiecare stare curenta
+        # tranzitie pe simbol din fiecare stare curenta
         for stare in stari_curente:
             if stare in tranzitii and simbol in tranzitii[stare]:
                 for dest in tranzitii[stare][simbol]:
                     stari_dupa_simbol.add(dest)
                     tranz_pas.append((stare, simbol, dest))
 
-        # Aplica lambda-closure dupa tranzitia pe simbol
+        # aplca lambda_closure
         stari_curente = lambda_closure(stari_dupa_simbol, tranzitii)
         tranzitii_fol.extend(tranz_pas)
 
-        # Adauga si tranzitiile lambda efectuate
+        # adauga si tranzitiile lambda efectuate
         for s in stari_dupa_simbol:
             for dest in lambda_closure(s, tranzitii):
                 if dest != s:
@@ -200,18 +208,17 @@ def proc_nfa_lambda(fisier_input, fisier_output):
 
     stari, tranzitii, stare_init, stari_fin, cuvinte, alfabet = parse(lines)
 
-    print(f"[NFA-λ] Alfabet: {sorted(alfabet)}")
+    print(f"[λ-NFA] Alfabet: {sorted(alfabet)}")
 
     rezultate = []
     for cuvant in cuvinte:
         acceptat, tranz_fol = run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant)
         rezultate.append("DA" if acceptat else "NU")
 
-        # BONUS: afisam tranzitiile fol pentru cuvintele acceptate
         if acceptat:
-            print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT.")
+            print(f"[λ-NFA] Cuvant '{cuvant}' ACCEPTAT.")
         else:
-            print(f"[NFA-λ] Cuvant '{cuvant}' RESPINS.")
+            print(f"[λ-NFA] Cuvant '{cuvant}' RESPINS.")
 
     with open(fisier_output, 'w') as f:
         for r in rezultate:
@@ -222,4 +229,4 @@ proc_dfa('dfa_input.txt', 'dfa_output.txt')
 print('\n')
 proc_nfa('nfa_input.txt', 'nfa_output.txt')
 print('\n')
-proc_nfa('nfa_input.txt', 'nfa_output.txt')
+proc_nfa_lambda('nfa_lambda_input.txt', 'nfa_lambda_output.txt')
