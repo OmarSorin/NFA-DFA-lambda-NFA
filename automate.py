@@ -167,8 +167,7 @@ def lambda_closure(stari_initiale, tranzitii):
 
 def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
 
-    #
-    stari_curente = lambda_closure({stare_init}, tranzitii)
+    stari_curente = lambda_closure({stare_init}, tranzitii) ## lambda closure pe q0 unde ajung doar din λ
     tranzitii_fol = []
 
     if cuvant == '':
@@ -187,9 +186,9 @@ def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
 
         # aplca lambda_closure
         stari_curente = lambda_closure(stari_dupa_simbol, tranzitii)
-        tranzitii_fol.extend(tranz_pas)
+        tranzitii_fol.extend(tranz_pas) ## era pt bonus dar am renuntat la NFA-uri :)
 
-        # adauga si tranzitiile lambda efectuate
+        # era toata bucla de jos pt bonus :)
         for s in stari_dupa_simbol:
             for dest in lambda_closure(s, tranzitii):
                 if dest != s:
