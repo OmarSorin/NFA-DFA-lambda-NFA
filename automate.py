@@ -209,7 +209,7 @@ def proc_nfa_lambda(fisier_input, fisier_output):
 
         # BONUS: afisam tranzitiile fol pentru cuvintele acceptate
         if acceptat:
-            print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
+            print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT.")
         else:
             print(f"[NFA-λ] Cuvant '{cuvant}' RESPINS.")
 
@@ -218,10 +218,8 @@ def proc_nfa_lambda(fisier_input, fisier_output):
             f.write(r + '\n')
 
 
-
-
-proc_nfa('nfa_input.txt', 'nfa_output.txt')
-print('\n')
 proc_dfa('dfa_input.txt', 'dfa_output.txt')
+print('\n')
+proc_nfa('nfa_input.txt', 'nfa_output.txt')
 print('\n')
 proc_nfa('nfa_input.txt', 'nfa_output.txt')
