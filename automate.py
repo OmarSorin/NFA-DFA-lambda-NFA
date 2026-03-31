@@ -48,7 +48,7 @@ def parse(lines):
 
 def run_dfa(tranzitii, stare_init, stari_fin, cuvant):
     stare_curenta = stare_init
-    tranzitii_folosite = []
+    tranzitii_fol = []
 
     # Cuvantul gol: verificam doar daca starea initiala e finala
     if cuvant == '':
@@ -58,12 +58,12 @@ def run_dfa(tranzitii, stare_init, stari_fin, cuvant):
         # Cautam tranzitia (stare_curenta, simbol) -> stare_dest
         if stare_curenta in tranzitii and simbol in tranzitii[stare_curenta]:
             dest = tranzitii[stare_curenta][simbol][0]  # DFA: luam primul (ar trebui sa fie unic)
-            tranzitii_folosite.append((stare_curenta, simbol, dest))
+            tranzitii_fol.append((stare_curenta, simbol, dest))
             stare_curenta = dest
         else:
-            return False, tranzitii_folosite ## refuza cuvantul
+            return False, tranzitii_fol ## refuza cuvantul
 
-    return stare_curenta in stari_fin, tranzitii_folosite
+    return stare_curenta in stari_fin, tranzitii_fol
 
 
 def proc_dfa(fisier_input, fisier_output):
@@ -77,11 +77,11 @@ def proc_dfa(fisier_input, fisier_output):
     rezultate = []
     for cuvant in cuvinte:
 
-        acceptat, tranz_folosite = run_dfa(tranzitii, stare_init, stari_fin, cuvant)
+        acceptat, tranz_fol = run_dfa(tranzitii, stare_init, stari_fin, cuvant)
         rezultate.append("DA" if acceptat else "NU")
 
         if acceptat:
-            print(f"[DFA] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_folosite}")
+            print(f"[DFA] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
         else:
             print(f"[DFA] Cuvant '{cuvant}' RESPINS. ")
 
@@ -96,7 +96,7 @@ def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
 
     # Multimea starilor curente - incepem cu starea initiala
     stari_curente = {stare_init}
-    tranzitii_folosite = []
+    tranzitii_fol = []
 
     if cuvant == '':
         return bool(stari_curente & stari_fin), []
@@ -110,14 +110,14 @@ def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
                 stari_noi.add(dest)
                 tranz_pas.append((stare, simbol, dest))
 
-        tranzitii_folosite.extend(tranz_pas)
+        tranzitii_fol.extend(tranz_pas)
         stari_curente = stari_noi
 
         if not stari_curente:
-            return False, tranzitii_folosite
+            return False, tranzitii_fol
 
     acceptat = bool(stari_curente & stari_fin)
-    return acceptat, tranzitii_folosite
+    return acceptat, tranzitii_fol
 
 
 def proc_nfa(fisier_input, fisier_output):
@@ -130,12 +130,12 @@ def proc_nfa(fisier_input, fisier_output):
 
     rezultate = []
     for cuvant in cuvinte:
-        acceptat, tranz_folosite = run_nfa(tranzitii, stare_init, stari_fin, cuvant)
+        acceptat, tranz_fol = run_nfa(tranzitii, stare_init, stari_fin, cuvant)
         rezultate.append("DA" if acceptat else "NU")
 
-        # BONUS: afisam tranzitiile folosite pentru cuvintele acceptate
+        # BONUS: afisam tranzitiile fol pentru cuvintele acceptate
         if acceptat:
-            print(f"[NFA] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_folosite}")
+            print(f"[NFA] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
         else:
             print(f"[DFA] Cuvant '{cuvant}' RESPINS.")
 
@@ -165,7 +165,7 @@ def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
 
     # Pasul initial: lambda-closure al starii initiale
     stari_curente = lambda_closure({stare_init}, tranzitii)
-    tranzitii_folosite = []
+    tranzitii_fol = []
 
     if cuvant == '':
         return bool(stari_curente & stari_fin), []
@@ -183,19 +183,19 @@ def run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant):
 
         # Aplica lambda-closure dupa tranzitia pe simbol
         stari_curente = lambda_closure(stari_dupa_simbol, tranzitii)
-        tranzitii_folosite.extend(tranz_pas)
+        tranzitii_fol.extend(tranz_pas)
 
         # Adauga si tranzitiile lambda efectuate
         for s in stari_dupa_simbol:
             for dest in lambda_closure(s, tranzitii):
                 if dest != s:
-                    tranzitii_folosite.append((s, 'lambda', dest))
+                    tranzitii_fol.append((s, 'lambda', dest))
 
         if not stari_curente:
-            return False, tranzitii_folosite
+            return False, tranzitii_fol
 
     acceptat = bool(stari_curente & stari_fin)
-    return acceptat, tranzitii_folosite
+    return acceptat, tranzitii_fol
 
 
 def proc_nfa_lambda(fisier_input, fisier_output):
@@ -208,12 +208,12 @@ def proc_nfa_lambda(fisier_input, fisier_output):
 
     rezultate = []
     for cuvant in cuvinte:
-        acceptat, tranz_folosite = run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant)
+        acceptat, tranz_fol = run_nfa_lambda(tranzitii, stare_init, stari_fin, cuvant)
         rezultate.append("DA" if acceptat else "NU")
 
-        # BONUS: afisam tranzitiile folosite pentru cuvintele acceptate
+        # BONUS: afisam tranzitiile fol pentru cuvintele acceptate
         if acceptat:
-            print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_folosite}")
+            print(f"[NFA-λ] Cuvant '{cuvant}' ACCEPTAT. Tranzitii: {tranz_fol}")
         else:
             print(f"[DFA] Cuvant '{cuvant}' RESPINS.")
 
