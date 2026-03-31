@@ -106,10 +106,9 @@ def run_nfa(tranzitii, stare_init, stari_fin, cuvant):
         tranz_pas = []
 
         for stare in stari_curente:
-            if stare in tranzitii and simbol in tranzitii[stare]:
-                for dest in tranzitii[stare][simbol]:
-                    stari_noi.add(dest)
-                    tranz_pas.append((stare, simbol, dest))
+            for dest in tranzitii.get(stare, {}).get(simbol, []):
+                stari_noi.add(dest)
+                tranz_pas.append((stare, simbol, dest))
 
         tranzitii_folosite.extend(tranz_pas)
         stari_curente = stari_noi
